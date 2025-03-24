@@ -1,0 +1,23 @@
+# Limpiar completamente el proyecto
+npm cache clean --force
+rm -rf node_modules
+rm package-lock.json
+
+# Reinstalar todas las dependencias
+npm install
+
+# Instalar Tailwind CSS (si aún no está instalado)
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
+
+# Iniciar la aplicación con un enfoque de "hard reset"
+npm start -- --reset-cache
+
+
+
+
+
+
+
+
+

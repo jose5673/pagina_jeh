@@ -1,0 +1,101 @@
+<%- include('partials/header', {pageTitle: 'Simulador PLC', currentPage: 'admin'}) %>
+
+<h1>Simulador PLC - Panel de Administración</h1>
+
+<% if (message) { %>
+  <div class="message <%= message.type %>">
+    <%= message.text %>
+  </div>
+<% } %>
+
+<div class="card">
+  <div class="card-header">Control de variables simuladas</div>
+  
+  <form action="/admin" method="POST">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="temperature">Temperatura (°C)</label>
+        <input type="number" id="temperature" name="temperature" value="<%= gaugeValues.temperature %>" step="0.1" required>
+        <div class="value-info">Valores típicos: -30 a 120°C</div>
+      </div>
+      
+      <div class="form-group">
+        <label for="voltage">Voltaje (V)</label>
+        <input type="number" id="voltage" name="voltage" value="<%= gaugeValues.voltage %>" step="0.1" required>
+        <div class="value-info">Valores típicos: 190 a 240V</div>
+      </div>
+      
+      <div class="form-group">
+        <label for="oilPressure">Presión de Aceite (Bar)</label>
+        <input type="number" id="oilPressure" name="oilPressure" value="<%= gaugeValues.oilPressure %>" step="0.1" required>
+        <div class="value-info">Valores típicos: 1 a 10 Bar</div>
+      </div>
+    </div>
+    
+    <div class="form-row">
+      <div class="form-group">
+        <label for="fuel">Nivel de Combustible (%)</label>
+        <input type="number" id="fuel" name="fuel" value="<%= gaugeValues.fuel %>" min="0" max="100" step="1" required>
+        <div class="value-info">Valores típicos: 0 a 100%</div>
+      </div>
+      
+      <div class="form-group">
+        <label for="current">Corriente (A)</label>
+        <input type="number" id="current" name="current" value="<%= gaugeValues.current %>" step="0.1" required>
+        <div class="value-info">Valores típicos: 0 a 100A</div>
+      </div>
+      
+      <div class="form-group">
+        <label for="batteryLevel">Nivel de Batería (%)</label>
+        <input type="number" id="batteryLevel" name="batteryLevel" value="<%= gaugeValues.batteryLevel %>" min="0" max="100" step="1" required>
+        <div class="value-info">Valores típicos: 0 a 100%</div>
+      </div>
+    </div>
+    
+    <div class="form-row">
+      <div class="form-group">
+        <label for="hoursOfUse">Horas de Uso (h)</label>
+        <input type="number" id="hoursOfUse" name="hoursOfUse" value="<%= gaugeValues.hoursOfUse %>" step="0.1" required>
+        <div class="value-info">Valores acumulativos</div>
+      </div>
+      
+      <div class="form-group">
+        <label for="operatingHours">Horas de Funcionamiento (h)</label>
+        <input type="number" id="operatingHours" name="operatingHours" value="<%= gaugeValues.operatingHours %>" step="0.1" required>
+        <div class="value-info">Valores acumulativos</div>
+      </div>
+      
+      <div class="form-group">
+        <label for="kva">kVA</label>
+        <input type="number" id="kva" name="kva" value="<%= gaugeValues.kva %>" step="0.1" required>
+        <div class="value-info">Valores típicos: 0 a 500 kVA</div>
+      </div>
+    </div>
+    
+    <div class="actions">
+      <button type="submit" class="btn">Actualizar Valores</button>
+    </div>
+  </form>
+</div>
+
+<div class="card">
+  <div class="card-header">Información</div>
+  <p>Esta interfaz simula un PLC (Controlador Lógico Programable) para controlar los valores que se muestran en los medidores del frontend.</p>
+  <p>Cada vez que actualices los valores en este formulario, se reflejarán <strong>automáticamente en tiempo real</strong> en el frontend a través del endpoint <code>/api/gauges</code>.</p>
+  <p>Los valores se transmiten cada 100ms para asegurar una visualización instantánea de los cambios.</p>
+</div>
+
+<script>
+  // Añadir javascript para mostrar retroalimentación de actualización
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    
+    form.addEventListener('submit', function() {
+      const submitBtn = this.querySelector('button[type="submit"]');
+      submitBtn.innerHTML = 'Actualizando...';
+      submitBtn.disabled = true;
+    });
+  });
+</script>
+
+<%- include('partials/footer') %>

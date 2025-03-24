@@ -1,0 +1,21 @@
+<%- include('partials/header', {pageTitle, currentPage}) %>
+
+<h1><%= pageTitle %></h1>
+
+<% if (message) { %>
+  <div class="message <%= message.type %>">
+    <%= message.text %>
+  </div>
+<% } %>
+
+<div class="card">
+  <div class="card-header">Página en Desarrollo</div>
+  <div style="text-align: center; padding: 40px 20px;">
+    <div style="font-size: 80px; margin-bottom: 20px;">🚧</div>
+    <h2 style="margin-bottom: 15px;">Esta sección está en construcción</h2>
+    <p style="margin-bottom: 20px; color: #666;">Estamos trabajando para implementar esta funcionalidad próximamente.</p>
+    <a href="/admin" class="btn">Volver al Panel Principal</a>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

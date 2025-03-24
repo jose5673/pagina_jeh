@@ -1,0 +1,33 @@
+<div class="navbar">
+  <div class="navbar-container">
+    <div class="navbar-logo">
+      <span class="logo-text">H&H Grupos</span>
+      <span class="logo-badge">Backend</span>
+    </div>
+    
+    <div class="navbar-menu">
+      <a href="/admin" class="navbar-item <%= currentPage === 'admin' ? 'active' : '' %>">
+        <span class="navbar-icon">📊</span>
+        Panel de Control
+      </a>
+      <a href="/gauge-settings" class="navbar-item <%= currentPage === 'gauge-settings' ? 'active' : '' %>">
+        <span class="navbar-icon">⚙️</span>
+        Configuración de Niveles
+      </a>
+      <a href="/api-explorer" class="navbar-item <%= currentPage === 'api-explorer' ? 'active' : '' %>">
+        <span class="navbar-icon">🔌</span>
+        API Explorer
+        <span class="badge">Próximamente</span>
+      </a>
+      <a href="/logs" class="navbar-item <%= currentPage === 'logs' ? 'active' : '' %>">
+        <span class="navbar-icon">📝</span>
+        Logs
+        <span class="badge">Próximamente</span>
+      </a>
+    </div>
+    
+    <div class="navbar-user">
+      <span class="user-info">Admin</span>
+    </div>
+  </div>
+</div>

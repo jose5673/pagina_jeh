@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Configuración de Niveles - Panel de Administración</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #ff6b00;
+      margin-bottom: 30px;
+    }
+    .card {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .form-row {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0 -10px;
+    }
+    .form-group {
+      flex: 1 0 calc(33.333% - 20px);
+      margin: 0 10px 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    .btn {
+      display: inline-block;
+      background-color: #ff6b00;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      font-size: 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s;
+    }
+    .btn:hover {
+      background-color: #e05d00;
+    }
+    .message {
+      padding: 10px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+    .success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    .error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+    .card-header {
+      margin: -20px -20px 20px;
+      padding: 15px 20px;
+      background-color: #f8f9fa;
+      border-bottom: 1px solid #eee;
+      border-radius: 8px 8px 0 0;
+      font-weight: bold;
+      font-size: 18px;
+    }
+    .actions {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .color-preview {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      margin-left: 8px;
+      vertical-align: middle;
+      border: 1px solid #ccc;
+    }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    .gauge-card {
+      background-color: #f9f9fa;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .gauge-card-header {
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .gauge-name {
+      font-weight: bold;
+      font-size: 18px;
+    }
+    .gauge-unit {
+      background-color: #e9ecef;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: #ff6b00;
+      text-decoration: none;
+    }
+    .back-link:hover {
+      text-decoration: underline;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      color: #777;
+      font-size: 14px;
+    }
+    .current-value {
+      color: #0077cc;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+    .sync-info {
+      background-color: #e7f3ff;
+      padding: 10px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      color: #0066cc;
+      display: flex;
+      align-items: center;
+    }
+    .sync-info-icon {
+      margin-right: 10px;
+      font-size: 20px;
+    }
+    .use-current-checkbox {
+      margin-bottom: 20px;
+      background-color: #f5f5f5;
+      padding: 10px 15px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+    }
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+    }
+    .checkbox-input {
+      margin-right: 10px;
+      width: auto;
+    }
+    .value-comparison {
+      display: flex;
+      align-items: center;
+      margin-top: 5px;
+      font-size: 14px;
+    }
+    .value-label {
+      font-weight: normal;
+      min-width: 100px;
+    }
+  </style>
+</head>
+<body>
+  <%- include('partials/header', {pageTitle: 'Configuración de Niveles', currentPage: 'gauge-settings'}) %>
+
+  <h1>Configuración de Niveles</h1>
+  
+  <% if (message) { %>
+    <div class="message <%= message.type %>">
+      <%= message.text %>
+    </div>
+  <% } %>
+  
+  <div class="card">
+    <div class="card-header">Ajustes de los Medidores</div>
+    <p>
+      Configure los límites mínimos y máximos, valores iniciales y colores para cada uno de los medidores del panel de instrumentos.
+      Estos valores se enviarán automáticamente al frontend cuando se soliciten los datos de configuración.
+    </p>
+    
+    <div class="sync-info">
+      <span class="sync-info-icon">ℹ️</span>
+      <div>
+        El campo "Valor Inicial" controla el valor que tendrá el medidor al cargar la página por primera vez.
+        Puede sincronizar automáticamente estos valores con los valores actuales que se muestran en el panel.
+      </div>
+    </div>
+  </div>
+  
+  <form action="/gauge-settings" method="POST">
+    <div class="use-current-checkbox">
+      <label class="checkbox-label">
+        <input type="checkbox" name="useCurrentAsInitial" class="checkbox-input">
+        Usar valores actuales como valores iniciales (los valores que aparecen a la derecha de cada campo)
+      </label>
+    </div>
+    
+    <div class="card-grid">
+      <% gaugeConfig.forEach(gauge => { %>
+        <div class="gauge-card">
+          <div class="gauge-card-header">
+            <span class="gauge-name"><%= gauge.name %></span>
+            <span class="gauge-unit"><%= gauge.unit %></span>
+          </div>
+          
+          <div class="form-group">
+            <label for="name_<%= gauge.id %>">Nombre del Medidor</label>
+            <input type="text" id="name_<%= gauge.id %>" name="name_<%= gauge.id %>" value="<%= gauge.name %>" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="unit_<%= gauge.id %>">Unidad</label>
+            <input type="text" id="unit_<%= gauge.id %>" name="unit_<%= gauge.id %>" value="<%= gauge.unit %>" required>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="min_<%= gauge.id %>">Valor Mínimo</label>
+              <input type="number" id="min_<%= gauge.id %>" name="min_<%= gauge.id %>" value="<%= gauge.min %>" step="any" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="max_<%= gauge.id %>">Valor Máximo</label>
+              <input type="number" id="max_<%= gauge.id %>" name="max_<%= gauge.id %>" value="<%= gauge.max %>" step="any" required>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="initialValue_<%= gauge.id %>">Valor Inicial</label>
+            <div class="value-comparison">
+              <input type="number" id="initialValue_<%= gauge.id %>" name="initialValue_<%= gauge.id %>" value="<%= gauge.initialValue %>" step="any" required>
+              <span class="current-value">Actual: <%= gauge.currentValue.toFixed(typeof gauge.currentValue === 'number' && (gauge.id === 'hoursOfUse' || gauge.id === 'operatingHours') ? 0 : 1) %> <%= gauge.unit %></span>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="startColor_<%= gauge.id %>">Color Inicial
+                <span class="color-preview" style="background-color: <%= gauge.startColor %>;"></span>
+              </label>
+              <input type="color" id="startColor_<%= gauge.id %>" name="startColor_<%= gauge.id %>" value="<%= gauge.startColor %>" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="endColor_<%= gauge.id %>">Color Final
+                <span class="color-preview" style="background-color: <%= gauge.endColor %>;"></span>
+              </label>
+              <input type="color" id="endColor_<%= gauge.id %>" name="endColor_<%= gauge.id %>" value="<%= gauge.endColor %>" required>
+            </div>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+    
+    <div class="actions">
+      <button type="submit" class="btn">Guardar Configuración</button>
+    </div>
+  </form>
+  
+  <%- include('partials/footer') %>
+</body>
+</html>
